@@ -1,14 +1,14 @@
 {
-  "name": "percentage-calculator",
+  "name": "coin-flip-simulator",
   "version": "1.4.0",
   "private": true,
-  "description": "A tap-tempo metronome utility that computes BPM from rhythmic taps and shows beat timing statistics.",
+  "description": "Flip one or many virtual coins with streak tracking, cumulative statistics and shareable results.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ItsJust-tools/1795287972.git"
+    "url": "git+https://github.com/ItsJust-tools/coin-flip-simulator.git"
   },
-  "homepage": "https://github.com/ItsJust-tools/1795287972",
+  "homepage": "https://github.com/ItsJust-tools/coin-flip-simulator",
   "workspaces": [
     "packages/*"
   ],

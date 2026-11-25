@@ -14,6 +14,8 @@ import { toolConfig, templateBaseVersion, Canvas, Toolbar, Sidebar, summaryText 
 import { coinFlipTool } from '@/tool/tool-definition';
 import type { ToolState } from '@/tool/types';
 
+import { flipMany, withFlip } from '@/tool/types';
+
 export default function ToolClient() {
   const ToolShellCompat = ToolShell as unknown as ComponentType<Record<string, unknown>> & {
     Toolbar?: ComponentType<{ children?: ReactNode }>;
@@ -108,8 +110,15 @@ export default function ToolClient() {
       <Toolbar
         state={state}
         onChange={(next) => setToolData(() => next)}
-        onClear={() => setToolData((prev) => ({ ...prev, history: [] }))}
+        onClear={() =>
+          setToolData((prev) => ({
+            ...prev,
+            history: [],
+            stats: { totalFlips: 0, heads: 0, tails: 0 },
+          }))
+        }
         onCopy={() => void handleCopyResult()}
+        onFlip={(count) => setToolData((prev) => withFlip(prev, flipMany(count)))}
       />
       <ImportExport
         formats={tool.supportedFormats}
@@ -132,9 +141,9 @@ export default function ToolClient() {
         onSaveHistory={(text) =>
           setToolData((prev) => ({
             ...prev,
-            history: [{ text, createdAt: new Date().toISOString() }, ...prev.history].slice(0, 20),
           }))
         }
+        onFlip={(count) => setToolData((prev) => withFlip(prev, flipMany(count)))}
       />
     </div>
   );
@@ -155,7 +164,9 @@ export default function ToolClient() {
           'Ready'
         )}
       </span>
-      <span className="status-slot status-slot-mode">{state.mode}</span>
+      <span className="status-slot status-slot-mode">
+        {state.batchCount === 1 ? 'single' : `batch ×${state.batchCount}`}
+      </span>
       <span className="status-slot status-slot-summary">{summaryText(state)}</span>
       <span className="status-slot status-slot-history">{state.history.length} saved</span>
       <span className="status-slot status-slot-tool-version">Tool v{toolConfig.version}</span>

@@ -1,29 +1,28 @@
-# BPM Tap Tempo
+# Coin Flip Simulator
 
-Tap in rhythm with a song and get an instant BPM estimate. A practical tempo-tapping utility for musicians, DJs and producers.
+Flip one or many virtual coins with streak tracking, cumulative statistics and shareable results. A practical randomness utility for games, decisions and demos.
 
-**Live:** [bpm-tap-tempo.itsjust.tools](https://bpm-tap-tempo.itsjust.tools)
+**Live:** [coin-flip-simulator.itsjust.tools](https://coin-flip-simulator.itsjust.tools)
 
 ## Features
 
-- Tap with the big pad, the toolbar button, `Space` or `T` — average BPM updates live
-- Sliding window of recent taps (2–30s, default 10s); the sequence resets after 2 seconds of inactivity
-- Live beat interval in milliseconds alongside BPM
-- BPM confidence range (min/max interval among recent taps)
-- Preset BPM reference grid (60/90/120/150/180) highlighting the nearest preset
-- Audio click feedback via the Web Audio API (toggle with the sidebar switch or `K`)
-- Copy the computed BPM to the clipboard (`C`) with toast feedback
+- Flip a single coin with an instant heads/tails result
+- Choose the batch size (1–100 coins) via presets or a custom number
+- Session history of flip events with timestamps, newest first
+- Streak tracker showing the current and longest heads/tails run
+- Cumulative statistics: total flips, heads/tails counts and percentages
+- Fairness indicator comparing the observed split against the expected 50/50
+- Copy the session summary to the clipboard (`C`) with toast feedback
 - Shareable state via URL, `.itsjust.json` import/export and image/PDF export
 - 100% client-side — no data ever leaves your browser
 
 ## Keyboard shortcuts
 
-| Key           | Action             |
-| ------------- | ------------------ |
-| `Space` / `T` | Tap                |
-| `R`           | Reset tap sequence |
-| `C`           | Copy BPM           |
-| `K`           | Toggle audio click |
+| Key | Action                    |
+| --- | ------------------------- |
+| `F` | Flip the configured batch |
+| `R` | Reset the session         |
+| `C` | Copy the summary          |
 
 ## Development
 
@@ -37,8 +36,8 @@ npm test
 ## Deployment
 
 ```bash
-docker build -t itsjust-bpm-tap-tempo .
-docker run -p 3000:3000 itsjust-bpm-tap-tempo
+docker build -t itsjust-coin-flip-simulator .
+docker run -p 3000:3000 itsjust-coin-flip-simulator
 ```
 
 ## License

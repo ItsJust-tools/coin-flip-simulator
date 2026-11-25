@@ -96,41 +96,29 @@ describe('app and seo', () => {
     expect(coinFlipTool.name).toBe(toolConfig.name);
     expect(
       coinFlipTool.deserialize({
-        mode: 'change',
-        changeFrom: '80',
-        changeTo: '100',
-        history: [{ text: 'X% of Y: 30', createdAt: '2026-11-21T10:00:00.000Z' }],
+        batchCount: 10,
+        history: [{ side: 'heads', count: 2, createdAt: '2026-11-21T10:00:00.000Z' }],
+        stats: { totalFlips: 2, heads: 2, tails: 0 },
       })
     ).toEqual({
       success: true,
       data: {
-        mode: 'change',
-        percentageOf: BASE_DEFAULT_STATE.percentageOf,
-        ofBase: BASE_DEFAULT_STATE.ofBase,
-        changeFrom: '80',
-        changeTo: '100',
-        reversePart: BASE_DEFAULT_STATE.reversePart,
-        reversePercent: BASE_DEFAULT_STATE.reversePercent,
-        addSubValue: BASE_DEFAULT_STATE.addSubValue,
-        addSubPercent: BASE_DEFAULT_STATE.addSubPercent,
-        addSubOp: BASE_DEFAULT_STATE.addSubOp,
-        compoundA: BASE_DEFAULT_STATE.compoundA,
-        compoundB: BASE_DEFAULT_STATE.compoundB,
-        history: [{ text: 'X% of Y: 30', createdAt: '2026-11-21T10:00:00.000Z' }],
+        batchCount: 10,
+        history: [{ side: 'heads', count: 2, createdAt: '2026-11-21T10:00:00.000Z' }],
+        stats: { totalFlips: 2, heads: 2, tails: 0 },
       },
     });
     const repaired = coinFlipTool.deserialize({ nope: true });
     expect(repaired.success).toBe(true);
     if (repaired.success) {
-      expect(repaired.data.mode).toBe(BASE_DEFAULT_STATE.mode);
+      expect(repaired.data.batchCount).toBe(BASE_DEFAULT_STATE.batchCount);
       expect(repaired.data.history).toEqual([]);
     }
-    expect(
-      coinFlipTool.serialize({ ...BASE_DEFAULT_STATE, changeFrom: '80' })
-    ).toContain('"changeFrom":"80"');
+    expect(coinFlipTool.serialize({ ...BASE_DEFAULT_STATE, batchCount: 5 })).toContain(
+      '"batchCount":5'
+    );
     const exporters =
-      (coinFlipTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ??
-      [];
+      (coinFlipTool as { exporters?: Array<{ loader: ExporterLoader }> }).exporters ?? [];
     expect(exporters).toHaveLength(4);
     const first = exporters[0];
     expect(first).toBeDefined();
@@ -148,17 +136,28 @@ describe('app and seo', () => {
           onChange={() => {}}
           onClear={() => {}}
           onCopy={() => {}}
+          onFlip={() => {}}
         />
         <Sidebar state={{ ...BASE_DEFAULT_STATE }} onChange={() => {}} />
         <Canvas
-          state={{ ...BASE_DEFAULT_STATE, mode: 'of', percentageOf: '20', ofBase: '150' }}
+          state={{
+            ...BASE_DEFAULT_STATE,
+            batchCount: 2,
+            history: [
+              { side: 'tails', count: 2, createdAt: '2026-11-25T10:00:00.000Z' },
+              { side: 'heads', count: 1, createdAt: '2026-11-25T09:59:00.000Z' },
+              { side: 'heads', count: 1, createdAt: '2026-11-25T09:58:00.000Z' },
+            ],
+            stats: { totalFlips: 4, heads: 2, tails: 2 },
+          }}
           onChange={() => {}}
+          onFlip={() => {}}
         />
       </>
     );
 
-    expect(screen.getByTestId('mode-tab-of')).toBeInTheDocument();
+    expect(screen.getByTestId('btn-flip')).toBeInTheDocument();
     expect(screen.getByTestId('result-card')).toBeInTheDocument();
-    expect(screen.getByTestId('result-main')).toHaveTextContent('30');
+    expect(screen.getByTestId('result-main')).toHaveTextContent('tails (2 coins)');
   });
 });

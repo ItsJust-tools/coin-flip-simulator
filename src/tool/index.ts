@@ -5,29 +5,20 @@ export {
   coinFlipTool,
   serializeState,
   deserializeState,
-  withHistory,
   roundTrips,
-  numberOrNull,
+  clampBatch,
+  computeStreak,
+  fairnessDeviation,
+  fairnessLabel,
+  flipMany,
+  headsPercent,
+  lastFlipText,
+  summaryText,
+  withFlip,
 } from './tool-definition';
 export { Canvas } from './components/Canvas';
 export { Sidebar } from './components/Sidebar';
 export { Toolbar } from './components/Toolbar';
-export { MODES } from './ui-shared';
-export {
-  DEFAULT_STATE,
-  MAX_HISTORY,
-  parseNumber,
-  formatNumber,
-  percentOf,
-  percentChange,
-  reversePercentage,
-  addSubtract,
-  compoundPercent,
-  changeResult,
-  resultText,
-  stepsFor,
-  summaryText,
-  historyText,
-  isState,
-} from './types';
-export type { Mode, AddSubOp, HistoryEntry, ToolState } from './types';
+export { FLIP_OPTIONS, SIDE_EMOJI } from './ui-shared';
+export { DEFAULT_STATE, MAX_HISTORY, MIN_BATCH, MAX_BATCH, flipCoin, isState } from './types';
+export type { Side, FlipEntry, StreakInfo, SessionStats, ToolState } from './types';
